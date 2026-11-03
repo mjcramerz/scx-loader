@@ -1,0 +1,5 @@
+scx-loader (1.1.3-1) unstable; urgency=medium
+
+  * Package the sched-ext loader daemon and command-line client for Debian.
+
+ -- scx-loader maintainers <scx-loader@packages.debian.org>  Mon, 02 Nov 2026 18:00:00 +0000

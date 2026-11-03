@@ -1,0 +1,7 @@
+debian/cargo-target/release/scx_loader usr/bin/
+debian/cargo-target/release/scxctl usr/bin/
+services/scx_loader.service usr/lib/systemd/system/
+services/org.scx.Loader.service usr/share/dbus-1/system-services/
+configs/org.scx.Loader.conf usr/share/dbus-1/system.d/
+configs/org.scx.Loader.xml usr/share/dbus-1/interfaces/
+configs/org.scx.Loader.policy usr/share/polkit-1/actions/

@@ -1,0 +1,28 @@
+Source: scx-loader
+Section: admin
+Priority: optional
+Maintainer: scx-loader maintainers <scx-loader@packages.debian.org>
+Standards-Version: 4.7.3
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+ cargo,
+ rustc,
+ pkgconf,
+ fakeroot
+Homepage: https://github.com/sched-ext/scx-loader
+Vcs-Git: https://github.com/sched-ext/scx-loader
+Vcs-Browser: https://github.com/sched-ext/scx-loader
+
+Package: scx-loader
+Architecture: any
+Depends:
+ dbus,
+ polkitd | policykit-1,
+ systemd | init-system-helpers,
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: D-Bus scheduler loader for sched_ext
+ scx_loader is a system daemon that starts and switches sched_ext schedulers
+ through a polkit-authorized D-Bus interface. The package also provides the
+ scxctl command-line client and the service, interface, and policy files.

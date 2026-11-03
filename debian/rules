@@ -1,0 +1,39 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+CARGO ?= cargo
+CARGO_BUILD_JOBS ?= 2
+NATIVE ?= 1
+CARGO_TARGET_DIR := $(CURDIR)/debian/cargo-target
+
+ifeq ($(NATIVE),1)
+ifneq ($(findstring -C target-cpu=native,$(RUSTFLAGS)),)
+else
+RUSTFLAGS += -C target-cpu=native
+endif
+endif
+export RUSTFLAGS
+
+%:
+	dh $@ --buildsystem=none
+
+override_dh_auto_clean:
+	CARGO_TARGET_DIR=$(CARGO_TARGET_DIR) $(CARGO) clean
+
+override_dh_auto_build:
+	python3 debian/sanitize-vendor-checksums.py
+	CARGO_TARGET_DIR=$(CARGO_TARGET_DIR) RUSTFLAGS="$(RUSTFLAGS)" \
+		$(CARGO) build --release --locked --offline \
+		--jobs $(CARGO_BUILD_JOBS) --workspace \
+		--exclude xtask
+
+override_dh_auto_test:
+	@:
+
+override_dh_auto_install:
+	install -D -m 0644 configs/scx_loader.toml \
+		debian/scx-loader/usr/share/scx_loader/config.toml
+
+override_dh_installsystemd:
+	dh_installsystemd --name=scx_loader
